@@ -10,7 +10,11 @@ router.get("/",async(req,res)=>{
             .then(
                 async(collection)=>{
                 const event = await collection.findOne({_id:event_id})
-                res.status(200).json({data:event})
+                if(!event){
+                    res.status(404).json({data:event})
+                } else{
+                    res.status(200).json({data:event})
+                }
             }
             )
             .catch((err)=>res.json({err}))
@@ -54,12 +58,12 @@ router.put("/:id",async(req,res)=>{
             .then(
                 async(collection)=>{
                 await collection.updateOne({_id:event_id},{$set:req.body})
-                res.json({status:"updated"}).status(200)
+                res.status(200).json({status:"updated"})
             }
             )
             .catch((err)=>{
                 console.log(err)
-                res.json({err})})
+                res.status(500).json({err})})
             .finally(()=>client.close())
     }
     catch(error){
@@ -76,9 +80,9 @@ router.delete("/:id",async(req,res)=>{
                 const result = await collection.deleteOne({_id:event_id})
                 const delete_count = await result.deletedCount
                 if(delete_count === 1){
-                    res.json({status:"deleted"}).status(200)
+                    res.status(200).json({status:"deleted"})
                 } else{
-                    res.json({status:"not found"}).status(404)
+                    res.status(404).json({status:"not found"})
                 }
             }
             )
