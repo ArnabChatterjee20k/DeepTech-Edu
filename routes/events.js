@@ -1,14 +1,25 @@
 const express = require("express");
 const router = express.Router();
-
+const ObjectId = require("mongodb").ObjectId
 const [db,client] = require("../utils/db")
-router.get("/",async(req,res)=>{
-    event_id = req.query.id
-    res.send(event_id)
-    // event from db
-})
 
-// router.get("/")
+router.get("/",async(req,res)=>{
+    try{
+        const event_id = new ObjectId(req.query.id)
+        db()
+            .then(
+                async(collection)=>{
+                const event = await collection.findOne({_id:event_id})
+                console.log(event)
+                res.status(200).json({event})
+            }
+            )
+            .catch((err)=>res.json({err}))
+            .finally(()=>client.close())
+    }catch(error){
+        res.status(500).json({"error":"internal server error"})
+    }
+})
 
 router.post("/",async(req,res)=>{
     try{
@@ -25,14 +36,14 @@ router.post("/",async(req,res)=>{
             .then(
                 async(collection)=>{
                 const {insertedId} = await collection.insertOne(req.body)
-                res.json({id:insertedId})
+                res.status(200).json({id:insertedId})
             }
             )
             .catch((err)=>res.json({err}))
             .finally(()=>client.close())
     }
-    catch{
-
+    catch(error){
+        res.status(500).json({"error":"internal server error"})
     }
         
 })
