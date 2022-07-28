@@ -38,7 +38,7 @@ router.post("/",async(req,res)=>{
             db()
             .then(
                 async(collection)=>{
-                const {insertedId} = await collection.insertOne(req.body)
+                const {insertedId} = await collection.insertOne({last_updated:new Date(),...req.body})
                 res.status(200).json({id:insertedId})
             }
             )
@@ -57,7 +57,7 @@ router.put("/:id",async(req,res)=>{
         db()
             .then(
                 async(collection)=>{
-                await collection.updateOne({_id:event_id},{$set:req.body})
+                await collection.updateOne({_id:event_id},{$set:{last_updated:new Date(),...req.body}})
                 res.status(200).json({status:"updated"})
             }
             )
