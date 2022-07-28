@@ -10,7 +10,6 @@ router.get("/",async(req,res)=>{
             .then(
                 async(collection)=>{
                 const event = await collection.findOne({_id:event_id})
-                console.log(event)
                 res.status(200).json({event})
             }
             )
@@ -46,5 +45,25 @@ router.post("/",async(req,res)=>{
         res.status(500).json({"error":"internal server error"})
     }
         
+})
+
+router.put("/:id",async(req,res)=>{
+    try{
+        const event_id = new ObjectId(req.params.id)
+        db()
+            .then(
+                async(collection)=>{
+                await collection.updateOne({_id:event_id},{$set:req.body})
+                res.json({status:"updated"}).status(200)
+            }
+            )
+            .catch((err)=>{
+                console.log(err)
+                res.json({err})})
+            .finally(()=>client.close())
+    }
+    catch(error){
+
+    }
 })
 module.exports = router
