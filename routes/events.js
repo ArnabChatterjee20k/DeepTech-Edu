@@ -10,7 +10,7 @@ router.get("/",async(req,res)=>{
             .then(
                 async(collection)=>{
                 const event = await collection.findOne({_id:event_id})
-                res.status(200).json({event})
+                res.status(200).json({data:event})
             }
             )
             .catch((err)=>res.json({err}))
