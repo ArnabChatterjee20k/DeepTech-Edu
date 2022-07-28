@@ -34,6 +34,21 @@
 | :-------- | :------- | :-------------------------------- |
 | `id` | `12-byte BSON type hexadecimal string` | **Required**. Event id |
 
+#### example paylaod
+```http
+  {
+    "name":"bittu", 
+    "files":{"image":"he"}, 
+    "tagline":"arnab",
+    "schedule":"arnab",
+    "description":"asf",
+    "moderator":"sf",
+    "category":"sdf",
+    "sub_category":"df",
+    "rigor_rank":"dsf"
+}
+```
+
 #### Update the event
 ```http
   PUT /events/${id}
@@ -41,6 +56,21 @@
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `id` | `12-byte BSON type hexadecimal string` | **Required**. Event id |
+
+#### example paylaod
+```http
+  {
+    "name":"bittu", 
+    "files":{"image":"he"}, 
+    "tagline":"arnab",
+    "schedule":"arnab",
+    "description":"asf",
+    "moderator":"sf",
+    "category":"sdf",
+    "sub_category":"df",
+    "rigor_rank":"dsf"
+}
+```
 
 #### Deletes an event based on its Unique Id
 ```http
