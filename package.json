@@ -4,11 +4,12 @@
   "description": "an api for deepedu tech",
   "main": "index.js",
   "scripts": {
-    "api":"nodemon index.js"
+    "api": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-cors": "^0.0.3",
     "mongodb": "^4.8.1"
