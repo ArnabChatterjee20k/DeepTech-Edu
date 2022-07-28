@@ -15,9 +15,10 @@ async function connectDB(){
         console.log("connected");
         return collection;
     }
-    catch{
+    catch(err){
+        console.log(err.message)
         client.close()
     }
 }
 
-module.exports = db
+module.exports = [connectDB,client]
