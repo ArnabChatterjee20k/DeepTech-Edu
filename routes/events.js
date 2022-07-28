@@ -9,12 +9,36 @@ router.get("/",async(req,res)=>{
         db()
             .then(
                 async(collection)=>{
-                const event = await collection.findOne({_id:event_id})
-                if(!event){
-                    res.status(404).json({data:event})
-                } else{
-                    res.status(200).json({data:event})
+                    const event = await collection.findOne({_id:event_id})
+                    if(!event){
+                        res.status(404).json({data:event})
+                    } else{
+                        res.status(200).json({data:event})
+                    }
                 }
+            )
+            .catch((err)=>res.json({err}))
+            .finally(()=>client.close())
+    }catch(error){
+        res.status(500).json({"error":"internal server error"})
+    }
+})
+
+router.get("/latest",async(req,res)=>{
+    const PAGE_SIZE = 2;
+    const page = 1;
+    const skip = (page-1)*PAGE_SIZE;
+    try{
+        db()
+            .then(
+                async(collection)=>{
+                   const data = await collection.aggregate([
+                        {$match:{}},
+                        {$skip:skip},
+                        {$limit:PAGE_SIZE}
+                   ]).toArray()
+                // let data = await collection.find({name:"arnab"}).toArray();
+                res.send(data) 
             }
             )
             .catch((err)=>res.json({err}))
@@ -23,6 +47,7 @@ router.get("/",async(req,res)=>{
         res.status(500).json({"error":"internal server error"})
     }
 })
+
 
 router.post("/",async(req,res)=>{
     try{
