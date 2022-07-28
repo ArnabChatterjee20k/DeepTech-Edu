@@ -63,7 +63,32 @@ router.put("/:id",async(req,res)=>{
             .finally(()=>client.close())
     }
     catch(error){
-
+        res.status(500).json({status:"internal server error"})
     }
 })
+
+router.delete("/:id",async(req,res)=>{
+    try{
+        const event_id = new ObjectId(req.params.id)
+        db()
+            .then(
+                async(collection)=>{
+                const result = await collection.deleteOne({_id:event_id})
+                const delete_count = await result.deletedCount
+                if(delete_count === 1){
+                    res.json({status:"deleted"}).status(200)
+                } else{
+                    res.json({status:"not found"}).status(404)
+                }
+            }
+            )
+            .catch((err)=>{
+                console.log(err)
+                res.json({err})})
+            .finally(()=>client.close())
+    }
+    catch(error){
+        res.status(500).json({status:"internal server error"})
+    }})
+
 module.exports = router
